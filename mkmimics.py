@@ -12,11 +12,9 @@ for filename in os.listdir("whistles/"):
         infile   = "whistles/{}.wav".format(basename)
         outfile  = "output/{}_mimic.wav".format(basename)        
         fs, data_whistle = wavfile.read(infile)    
-        audio = mimic_by_burst(data_click, data_whistle)
+        audio = mimic(data_whistle, fs, len(data_whistle) / fs)
         print("\t3) Write Result")
-        #wavfile.write(outfile, fs, audio * 0.1)
-        wavfile.write(outfile, fs, audio * 0.001)
-        print("\tDone")
+        wavfile.write(outfile, fs, audio * 0.1)
 
 
 fs, data_click = wavfile.read('resources/one_click.wav')
