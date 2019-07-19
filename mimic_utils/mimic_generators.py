@@ -28,11 +28,22 @@ def mimic_by_clicks(one_click, data_whistle):
     ''' 
     print("\t1) Compute Spectrograms")
     spec_whistle = fwd_spectrogram(data_whistle[:, 0], FFT_WIN, FFT_STEP)    
-
     print("\t2) Trace Whistle And Create Mask")
-    whistle_trace, _           = trace(spec_whistle, TRACE_RAD, SMOOTH_ENT)
-    data_click, delay_profile  = mk_click(whistle_trace, one_click[:, 0], data_whistle[:, 0].shape[0])
-    spec_click                 = fwd_spectrogram(data_click, FFT_WIN, FFT_STEP)
-    whistle_mask               = delete_mask(whistle_trace, spec_click.shape[0], FFT_WIN, MARGIN, HARMONICS, SHIFT)
-    deleted                    = bwd_spectrogram(spec_click * whistle_mask, FFT_WIN, FFT_STEP)    
+    whistle_trace, _  = trace(spec_whistle, TRACE_RAD, SMOOTH_ENT)    
+    data_click, _     = mk_click(whistle_trace, one_click[:, 0], data_whistle[:, 0].shape[0], FFT_WIN)
+    spec_click        = fwd_spectrogram(data_click, FFT_WIN, FFT_STEP)
+    whistle_mask      = delete_mask(whistle_trace, spec_click.shape[0], FFT_WIN, MARGIN, HARMONICS, SHIFT)
+    deleted           = bwd_spectrogram(spec_click * whistle_mask, FFT_WIN, FFT_STEP)    
     return deleted
+
+
+def mimic(data_whistle, rate, seconds):
+    print("\t1) Compute Spectrograms")
+    spec_whistle = fwd_spectrogram(data_whistle[:, 0], FFT_WIN, FFT_STEP)    
+    print("\t2) Trace Whistle And Create Audio")
+    whistle_trace, _ = trace(spec_whistle, TRACE_RAD, SMOOTH_ENT)
+    whistle_trace   *= SHIFT
+    frequencies = trace2frequencies(whistle_trace[:-50], rate, FFT_WIN)
+    audio       = trace2audio(frequencies, rate, seconds)    
+    return np.array(audio)
+
