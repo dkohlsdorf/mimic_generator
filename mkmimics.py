@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 
 import os
 
+
 for filename in os.listdir("whistles/"):
     if filename.endswith(".wav"):
         print("Processing: {} to mimic".format(filename))
