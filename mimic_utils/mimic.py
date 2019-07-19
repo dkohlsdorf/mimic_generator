@@ -100,13 +100,3 @@ def trace2audio(trace, rate, sec):
             t += 1                            
             audio.append(raw * loudness[j])
     return np.array(audio)
-
-
-def burst_packages(trace):
-    '''
-    Sets all regions in a trace that are larger than 1 to one.
-
-    trace: a whistle trace
-    '''
-    trace[trace > 0.0] = 1.0
-    return trace
