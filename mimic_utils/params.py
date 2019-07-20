@@ -16,7 +16,7 @@ class SampleRange(namedtuple('SampleRange', 'start stop')):
 # Dynamic Parameters
 HARMONICS = SampleRange(1,   8)
 MARGIN    = SampleRange(3,   8)
-SHIFT     = SampleRange(1,  50)  
+SHIFT     = SampleRange(1,   5)  
 
 # Fixed Params
 FFT_WIN    = 1024
