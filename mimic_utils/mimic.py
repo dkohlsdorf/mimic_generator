@@ -100,3 +100,24 @@ def trace2audio(trace, rate, sec):
             t += 1                            
             audio.append(raw * loudness[j])
     return np.array(audio)
+
+
+def trace2burst(trace, click, target_len):
+    '''
+    Create burst pulses from trace
+
+    trace: the whistle trace
+    click: a dolphin click
+    target_len: desired length
+    '''
+    n = len(trace)
+    t = int(target_len / n)
+    audio  = np.zeros(target_len)
+    scaler = np.ones(target_len)
+    for (i, f) in enumerate(trace):
+        if f > 0.0:
+            start = i * t
+            stop  = start + len(click)
+            audio[start:stop]  += click
+            scaler[start:stop] += 1
+    return audio / scaler
