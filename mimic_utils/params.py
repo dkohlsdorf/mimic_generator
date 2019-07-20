@@ -8,7 +8,7 @@ from collections import namedtuple
 class SampleRange(namedtuple('SampleRange', 'start stop')):
 
     def sample(self):
-        if isinstance(start, int):
+        if isinstance(self.start, int):
             return random.randint(self.start, self.stop)
         else:
             return np.random.uniform(self.start, self.stop)
