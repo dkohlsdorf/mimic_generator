@@ -41,7 +41,6 @@ if __name__ == "__main__":
                 print("Writing To   {}".format(outfolder))
                 print("Generating:  {}".format(n_mimics))
                 
-                '''
                 for filename in os.listdir(infolder):
                     if filename.endswith(".wav"):
                         print("Processing: {} to burst".format(filename))
@@ -52,7 +51,6 @@ if __name__ == "__main__":
                         audio            = mimic_burst(data_click, data_whistle)
                         print("\t3) Write Result")
                         wavfile.write(outfile, fs, audio * 0.001)
-                '''
 
                 for filename in os.listdir(infolder):
                     if filename.endswith(".wav"):
