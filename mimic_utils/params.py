@@ -13,6 +13,7 @@ class SampleRange(namedtuple('SampleRange', 'start stop')):
         else:
             return np.random.uniform(self.start, self.stop)
 
+
 # Dynamic Parameters
 HARMONICS = SampleRange(1,   8)
 MARGIN    = SampleRange(3,   8)
