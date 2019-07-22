@@ -4,7 +4,11 @@ import tensorflow.keras.backend as K
 from tensorflow.keras.layers import *
 from tensorflow.keras.models import *
 
+
 def wasserstein_loss(y_true, y_pred):
+    '''
+    Wasserstein loss    
+    '''
     return -K.mean(y_true * y_pred)
 
 
@@ -40,7 +44,7 @@ def discriminator(length, bins):
     Classify if a spectrogram is generated artificially or manually.
 
     length: Length of the spectrogram
-    bins: number of frequency bins
+    bins: Number of frequency bins
     '''    
     input = Input(shape = (length, bins, 1))
     x     = Conv2D(32, kernel_size = (3, 3), activation='relu')(input)
