@@ -59,5 +59,13 @@ def discriminator(length, bins):
     return model
 
 
-generator(100).summary()
-discriminator(100, 512).summary()
+def adversarial(length):
+    gen  = generator(length)
+    disc = discriminator(length, 512)
+
+    return gen, disc
+
+
+gen, disc = adversarial(100)
+gen.summary()
+disc.summary()
