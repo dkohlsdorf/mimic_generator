@@ -131,5 +131,3 @@ class TrainGAN:
             print("Discriminator [{} {} {}] || Generator {}".format(
                 d_loss, d_loss_real, d_loss_fake, g_loss
             ))
-
-            
