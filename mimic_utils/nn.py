@@ -1,10 +1,13 @@
 import numpy as np
+
 import tensorflow.keras.backend as K
 
 from tensorflow.keras.layers import *
 from tensorflow.keras.models import *
 from tensorflow.keras.optimizers import *
 from tensorflow.keras.constraints import *
+
+from mimic_utils.spectrogram import *
 
 
 def wasserstein_loss(y_true, y_pred):
@@ -75,27 +78,41 @@ class WeightClip(Constraint):
                 'c': self.c}
 
 
-class TrainGAN:
+class GAN:
     '''
     Train a Generative Adversarial Neural Network
     '''    
 
-    def __init__(self, length):
-        self.gen  = generator(length)
-        self.disc = discriminator(length, 512)
-        self.length = length
-        self.adversarial()
+    def __init__(self, length = None, path = None):
+        assert length is not None or path is not None
+        if length is not None:
+            self.gen  = generator(length)
+            self.disc = discriminator(length, 512)
+            self.length = length
+            self.adversarial()
+        elif path is not None:
+            self.gen   = load_model("{}/gen.h5".format(path))
+            self.disc  = load_model("{}/disc.h5".format(path))
+            self.model = load_model("{}/gan.h5".format(path))
 
     def expand_trace(self, trace):
         expanded = np.random.uniform(size = (1, 2 * self.length))
         expanded[:, 0:self.length] = trace
         return expanded
 
-    def create(self, trace):
+    def create(self, trace, win, step):
         fake = self.gen.predict(self.expand_trace(trace))
         (_, t, d, _) = fake.shape
-        return fake.reshape(t,d)
-    
+        spec         = fake.reshape(t,d)
+        mirrored     = np.flip(spec, axis=0)        
+        audio = bwd_spectrogram(np.hstack([spec, mirrored]), win, step)        
+        return audio
+
+    def save(self, folder):
+        self.gen.save("{}/gen.h5".format(folder))
+        self.disc.save("{}/disc.h5".format(folder))
+        self.model.save("{}/gan.h5".format(folder))
+        
     def set_trainable(self, m, val):
         m.trainable = val
         for l in m.layers:
