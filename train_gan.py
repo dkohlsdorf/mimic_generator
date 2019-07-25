@@ -19,5 +19,5 @@ for basename, trace in whistle_traces.items():
         audio       = gan.create(trace, FFT_WIN, FFT_STEP)
         outfile     = "output/{}_gan_{}.wav".format(basename, i)
         outfile_txt = "output/{}_gan_{}.txt".format(basename, i)
-        wavfile.write(outfile, 190000, audio)
-        np.savetxt(audio)
+        wavfile.write(outfile, 190000, audio * 10)
+        np.savetxt(outfile_txt, audio)
