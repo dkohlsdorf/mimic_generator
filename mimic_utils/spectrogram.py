@@ -28,7 +28,7 @@ def bwd_spectrogram(spectrogram, win, step):
     '''
     t = len(spectrogram) * step + win
     audio  = np.zeros(t)
-    scaler = np.zeros(t)
+    scaler = np.ones(t)
     for (i, sample) in enumerate(spectrogram):
         window = ifft(sample)
         audio[i * step: (i * step) + win] += window.real 
